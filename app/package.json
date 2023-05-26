@@ -15,11 +15,13 @@
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-svg": "13.4.0",
-    "styled-components": "^6.0.0-rc.2"
+    "styled-components": "^5.3.11"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.0.14",
+    "@types/styled-components": "^5.1.26",
+    "@types/styled-components-react-native": "^5.2.1",
     "@typescript-eslint/eslint-plugin": "^5.59.7",
     "@typescript-eslint/parser": "^5.59.7",
     "eslint": "^8.41.0",
