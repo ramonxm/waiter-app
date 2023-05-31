@@ -7,20 +7,34 @@ import { MinusCircle } from '../Icons/MinusCircle';
 import { Button } from '../Button';
 import * as S from './styles';
 import { Product } from '../../types/product';
+import { OrderConfirmedModal } from '../OrderConfirmedModal';
+import { useState } from 'react';
 
 type CartProps = {
   cartItems: CartItem[];
   onAdd: (product: Product) => void;
   onDecrement: (product: Product) => void;
+  onConfirmOrder: () => void;
 };
 
-export const Cart = ({ cartItems, onAdd, onDecrement }: CartProps) => {
+export const Cart = ({ cartItems, onAdd, onDecrement, onConfirmOrder }: CartProps) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const total = cartItems.reduce((acc, cartItem) => {
     return acc + cartItem.quantity * cartItem.product.price;
   }, 0);
 
+  function handleConfirmOrder() {
+    setIsModalVisible(true);
+  }
+
+  function handleOk(){
+    onConfirmOrder();
+    setIsModalVisible(false);
+  }
+
   return (
     <>
+      <OrderConfirmedModal visible={isModalVisible} onOk={handleOk}/>
       {cartItems.length > 0 && (
         <FlatList
           data={cartItems}
@@ -53,9 +67,7 @@ export const Cart = ({ cartItems, onAdd, onDecrement }: CartProps) => {
                   <PlusCircle />
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                  onPress={() => onDecrement(cartItem.product)}
-                >
+                <TouchableOpacity onPress={() => onDecrement(cartItem.product)}>
                   <MinusCircle />
                 </TouchableOpacity>
               </S.Actions>
@@ -76,7 +88,9 @@ export const Cart = ({ cartItems, onAdd, onDecrement }: CartProps) => {
             <Text color="#999">Seu carrinho está vazio</Text>
           )}
         </S.TotalContainer>
-        <Button disabled={cartItems.length === 0}>Confirmar pedido</Button>
+        <Button onPress={handleConfirmOrder} disabled={cartItems.length === 0}>
+          Confirmar pedido
+        </Button>
       </S.Summary>
     </>
   );
