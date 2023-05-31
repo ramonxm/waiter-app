@@ -27,3 +27,14 @@ export const Actions = styled.View`
 `;
 
 export const ProductDetails = styled.View``;
+
+export const Summary = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const TotalContainer = styled.View`
+  margin: 32px;
+  flex: 1;
+`;
