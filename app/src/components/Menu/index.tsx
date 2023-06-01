@@ -37,7 +37,7 @@ export const Menu = ({ onAddToCart, products }: MenuProps) => {
         keyExtractor={(product) => product._id}
         renderItem={({ item: product }) => (
           <S.Product onPress={() => handleOpenModal(product)}>
-            <S.Image source={{ uri: product.imagePath }} />
+            <S.Image source={{ uri: `http://192.168.1.6:3001/uploads/${product.imagePath}` }} />
             <S.ProductDetails>
               <Text weight="600">{product.name}</Text>
               <Text size={14} color="#666" style={{ marginVertical: 8 }}>

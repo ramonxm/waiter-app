@@ -1,23 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { Button } from '../components/Button';
+import { Cart } from '../components/Cart';
 import { Categories } from '../components/Categories';
 import { Header } from '../components/Header';
+import { Empty } from '../components/Icons/Empty';
 import { Menu } from '../components/Menu';
 import { TableModal } from '../components/TableModal';
-import { ActivityIndicator } from 'react-native';
-import { Cart } from '../components/Cart';
+import { Text } from '../components/Text';
 import { CartItem } from '../types/cart-item';
+import { Category } from '../types/category';
 import { Product } from '../types/product';
 import * as S from './styles';
-import { Empty } from '../components/Icons/Empty';
-import { Text } from '../components/Text';
+import { api } from '../services/api';
 
 export const Main = () => {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
-  const [isLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [products] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    Promise.all([api.get('categories'), api.get('products')]).then(
+      ([categoryResponse, productsResponse]) => {
+        setCategories(categoryResponse.data);
+        setProducts(productsResponse.data);
+        setIsLoading(false);
+      }
+    );
+  }, []);
+
+  async function handleSelectCategory(categoryId: string) {
+    const route = !categoryId
+      ? 'products'
+      : `categories/${categoryId}/products`;
+
+    const { data } = await api.get(route);
+    setProducts(data);
+  }
 
   function handleSaveTable(table: string) {
     setSelectedTable(table);
@@ -92,7 +114,10 @@ export const Main = () => {
         ) : (
           <>
             <S.CategoriesContainer>
-              <Categories />
+              <Categories
+                categories={categories}
+                onSelectCategory={handleSelectCategory}
+              />
             </S.CategoriesContainer>
             {products.length > 0 ? (
               <S.MenuContainer>

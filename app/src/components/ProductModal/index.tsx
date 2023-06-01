@@ -37,7 +37,7 @@ export const ProductModal = ({
       presentationStyle="pageSheet"
       onRequestClose={onClose}
     >
-      <S.Image source={{ uri: product.imagePath }}>
+      <S.Image source={{ uri: `http://192.168.1.6:3001/uploads/${product.imagePath}` }}>
         <S.CloseButton onPress={onClose}>
           <Close />
         </S.CloseButton>

@@ -50,7 +50,7 @@ export const Cart = ({
           renderItem={({ item: cartItem }) => (
             <S.Item>
               <S.ProductContainer>
-                <S.Image source={{ uri: cartItem.product.imagePath }}></S.Image>
+                <S.Image source={{ uri: `http://192.168.1.6:3001/uploads/${cartItem.product.imagePath}` }}></S.Image>
                 <S.QuantityContainer>
                   <Text size={14} color="#666">
                     {cartItem.quantity}x
